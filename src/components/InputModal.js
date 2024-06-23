@@ -103,6 +103,8 @@ const StyledCheckbox = styled.input`
   
   &:checked {
     background-color: #0052EA; 
+    vertical-align: -0.5px;
+ 
   }
 
   &:checked::before {
@@ -111,6 +113,7 @@ const StyledCheckbox = styled.input`
     text-align: center;
     line-height: 18px;
     color: white;
+    
   }
 `;
 
