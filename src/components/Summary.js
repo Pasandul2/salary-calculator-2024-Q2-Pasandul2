@@ -39,8 +39,8 @@ const Summary = () => {
       </SummaryItem><br></br>
       <SummaryItemContainer>
       <SummaryItem>
-        <span style={{border:'1px'}}>Net Salary (Take Home)</span>
-        <span>{netSalary}</span>
+        <span style={{border:'1px',fontFamily:'Inter, sans-serif',fontWeight:'600',fontSize:'16px'}}>Net Salary (Take Home)</span>
+        <span style={{fontFamily:'Inter, sans-serif',fontWeight:'600',fontSize:'16px'}}>{netSalary}</span>
         </SummaryItem>
       </SummaryItemContainer>
       <p style={{fontFamily:'Inter, sans-serif',fontSize:'14px',fontWeight:'600',color:'#757575'}}>Contribution from the Employer</p>
@@ -73,8 +73,9 @@ const Container = styled.div`
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 100%;
-
+  width: 95%;
+    margin:7px;
+    
   @media (max-width: 768px) {
     padding: 10px;
     h2, h3 {

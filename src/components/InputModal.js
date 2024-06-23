@@ -52,6 +52,7 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
       <div style={{margin:'20px'}}>
         <h4 style={{ marginBottom:'3px',fontFamily:'Inter, sans-serif',fontWeight:'600',fontSize:'14px',color:'#00318C'}}>Name</h4>
         <Input
+          
           type="text"
           placeholder="Eg: Travel"
           value={description}
@@ -66,11 +67,11 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
         />
         {isEarning && (
           <div style={{marginTop:'20px'}}>
-            <input 
-              type="checkbox"
-              checked={epfApplicable}  style={{backgroundColor:'blue'}}
-              onChange={(e) => setEpfApplicable(e.target.checked)}
-            />
+            <StyledCheckbox
+        type="checkbox"
+        checked={epfApplicable}
+        onChange={(e) => setEpfApplicable(e.target.checked)}
+      />
             <label style={{marginLeft:'10px',fontFamily:'Inter, sans-serif'}}>EPF/ETF</label>
           </div>
         )}
@@ -78,9 +79,9 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
       {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
       <br />
       <div style={dividerStyle} />
-      <div style={{marginLeft:'65%'}}>
-        <Button style={{backgroundColor:'white',width:'79px',height:'40px',borderRadius:'4px',padding:'12px',gap:'10px',color:'#0052EA',borderColor:'white'}} onClick={onRequestClose}>Cancel</Button>
-        <Button style={{backgroundColor:'#0052EA', borderRadius:'4px',borderColor:'#0052EA',padding:'10px' , width:'60px',height:'40px', fontFamily:'Inter, sans-serif',fontSize:'14px',fontWeight:'500',color:'white'}} onClick={handleSave}>Add</Button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '10px' }}>
+        <Button style={{backgroundColor:'white',width:'79px',height:'40px',borderRadius:'4px',padding:'12px',gap:'10px',color:'#0052EA',borderColor:'white',cursor: 'pointer'}} onClick={onRequestClose}>Cancel</Button>
+        <Button style={{backgroundColor:'#0052EA', borderRadius:'4px',borderColor:'#0052EA',padding:'10px' , width:'60px',height:'40px', fontFamily:'Inter, sans-serif',fontSize:'14px',fontWeight:'500',color:'white',cursor: 'pointer'}} onClick={handleSave}>Add</Button>
       </div>
     </Modal>
   );
@@ -88,18 +89,50 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
 
 export default InputModal;
 
+
+const StyledCheckbox = styled.input`
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #0052EA; 
+  border-radius: 4px;
+  outline: none;
+  
+  vertical-align: -7px;
+  cursor: pointer;
+  
+  &:checked {
+    background-color: #0052EA; 
+  }
+
+  &:checked::before {
+    content: '✔';
+    font-size: 16px;
+    text-align: center;
+    line-height: 18px;
+    color: white;
+  }
+`;
+
 const dividerStyle = {
-  margin:'0px',
-  borderTop: '1px solid #ccc',
+  
+  borderTop: '1px solid #E0E0E0',
 };
 
 const Input = styled.input`
   display: block;
   padding: 10px;
-  width: 492px;
+  width: 100%;
   height: 32px;
   box-sizing: border-box;
+  border: 1px solid #E0E0E0 ;
+  border-radius: 4px;
+
+  @media (min-width: 768px) {
+    width: 492px; 
+  }
 `;
+
 
 const Button = styled.button`
   margin: 10px 5px;
