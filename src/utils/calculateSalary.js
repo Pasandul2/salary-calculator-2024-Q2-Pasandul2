@@ -12,7 +12,7 @@ export const calculateSalary = (basicSalary, earnings, deductions) => {
   const employerEPF = grossSalaryForEPF * 0.12;
   const employerETF = grossSalaryForEPF * 0.03;
 
-  // Example APIT calculation, adjust as needed
+
   const apit = (grossEarnings * 0.18) - 25500; 
 
   const netSalary = grossEarnings - grossDeductions - employeeEPF - apit;

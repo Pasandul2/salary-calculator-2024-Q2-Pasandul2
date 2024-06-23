@@ -1,4 +1,3 @@
-// src/features/salary/salarySlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
