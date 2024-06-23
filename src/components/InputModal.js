@@ -14,7 +14,7 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
     if (isOpen) {
       if (item) {
         setDescription(item.description);
-        setAmount(item.amount);
+        setAmount(item.amount.toString());
         setEpfApplicable(item.epfApplicable || false);
       } else {
         setDescription('');
@@ -26,7 +26,7 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
   }, [isOpen, item]);
 
   const handleSave = () => {
-    if (description.trim() === '' || amount.trim() === '') {
+    if (description.trim() === '' || amount.toString().trim() === '') {
       setErrorMessage('Please fill out all required fields.');
       return;
     }
@@ -59,7 +59,7 @@ const InputModal = ({ isOpen, onRequestClose, onSave, title, item, isEarning }) 
         />
         <h4 style={{marginBottom:'3px',fontFamily:'Inter, sans-serif',fontWeight:'600',fontSize:'14px',color:'#00318C'}}>Amount</h4>
         <Input
-          type="number"
+          type="text"
           placeholder="Eg: 10,000"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}

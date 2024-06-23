@@ -87,20 +87,9 @@ const SalaryCalculator = () => {
       <StyledH4>Allowance, Fixed Allowance, Bonus and etc.</StyledH4>
       {state.earnings.map((earning, index) => (
         <EarningItem key={index}>
-          <input
-            type="text"
-            value={earning.description}
-            onChange={(e) =>
-              updateEarning(index, { ...earning, description: e.target.value })
-            }
-          />
-          <input
-            type="text"
-            value={earning.amount}
-            onChange={(e) =>
-              updateEarning(index, { ...earning, amount: parseFloat(e.target.value) || 0 })
-            }
-          />
+          <span style={{ fontFamily:'Inter, sans-serif',fontWeight:'400',fontSize:'16px'}}>{earning.description}:</span>
+          <span style={{ fontFamily:'Inter, sans-serif',fontWeight:'400',fontSize:'16px'}}>{earning.amount}</span>
+           
           <input
             type="checkbox"
             checked={earning.epfApplicable}
@@ -121,21 +110,8 @@ const SalaryCalculator = () => {
       <StyledH4>Salary Advances, Loan Deductions and all</StyledH4>
       {state.deductions.map((deduction, index) => (
         <DeductionItem key={index}>
-          <input
-            type="text"
-            value={deduction.description}
-            onChange={(e) =>
-              updateDeduction(index, { ...deduction, description: e.target.value })
-            }
-          />
-          
-          <input
-            type="number"
-            value={deduction.amount}
-            onChange={(e) =>
-              updateDeduction(index, { ...deduction, amount: parseFloat(e.target.value) || 0 })
-            }
-          />
+          <span style={{ fontFamily:'Inter, sans-serif',fontWeight:'400',fontSize:'16px'}}>{deduction.description}:</span>
+          <span style={{ fontFamily:'Inter, sans-serif',fontWeight:'400',fontSize:'16px'}}>{deduction.amount}</span>
           <img src='./img/edit.png' onClick={() => handleEditDeduction(index)} alt='edit' />
           <img onClick={() => deleteDeduction(index)} src='./img/delete.png' alt='delete' />
         </DeductionItem>
