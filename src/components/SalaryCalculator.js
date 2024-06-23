@@ -1,4 +1,3 @@
-// SalaryCalculator.js
 import React, { useContext, useState, useEffect } from 'react';
 import { SalaryContext } from '../context/SalaryProvider';
 import styled from 'styled-components';
@@ -20,6 +19,8 @@ const SalaryCalculator = () => {
   const [localBasicSalary, setLocalBasicSalary] = useState(state.basicSalary);
   const [isEarningModalOpen, setIsEarningModalOpen] = useState(false);
   const [isDeductionModalOpen, setIsDeductionModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null); // Track the item being edited
+  const [modalType, setModalType] = useState(''); // Track if the modal is for earnings or deductions
 
   useEffect(() => {
     setLocalBasicSalary(state.basicSalary);
@@ -32,22 +33,56 @@ const SalaryCalculator = () => {
   };
 
   const handleAddEarning = (newEarning) => {
-    addEarning(newEarning);
+    if (editingItem !== null) {
+      updateEarning(editingItem.index, newEarning);
+    } else {
+      addEarning(newEarning);
+    }
+    setEditingItem(null);
   };
 
   const handleAddDeduction = (newDeduction) => {
-    addDeduction(newDeduction);
+    if (editingItem !== null) {
+      updateDeduction(editingItem.index, newDeduction);
+    } else {
+      addDeduction(newDeduction);
+    }
+    setEditingItem(null);
+  };
+
+  const handleEditEarning = (index) => {
+    setEditingItem({ type: 'earning', index });
+    setModalType('Earning');
+    setIsEarningModalOpen(true);
+  };
+
+  const handleEditDeduction = (index) => {
+    setEditingItem({ type: 'deduction', index });
+    setModalType('Deduction');
+    setIsDeductionModalOpen(true);
+  };
+
+  const containerStyle = {
+    display: 'flex',
+    alignItems: 'center', 
+    marginBottom: '10px', 
   };
 
   return (
     <Container>
-      <h2 style={titleStyle}>Calculate Your Salary</h2>
-      <label style={labelStyle}>Basic Salary</label><br></br>
+      <div style={containerStyle}>
+        <h2 style={titleStyle}>Calculate Your Salary</h2>
+        <div style={{marginLeft:'auto',marginBottom:'10px',cursor: 'pointer'}}>
+          <img style={{}} onClick={reset} src='./img/reset.png' alt=''></img>
+          <span style={{color:'#0052EA'}} onClick={reset}>Reset</span>
+        </div>
+      </div>
+      <label style={labelStyle}>Basic Salary</label><br/>
       <StyledInput
         type="text"
         value={localBasicSalary}
         onChange={handleBasicSalaryChange}
-      /><br></br>
+      /><br/>
       <label style={labelStyle}>Earnings</label>
       <StyledH4>Allowance, Fixed Allowance, Bonus and etc.</StyledH4>
       {state.earnings.map((earning, index) => (
@@ -60,7 +95,7 @@ const SalaryCalculator = () => {
             }
           />
           <input
-            type="number"
+            type="text"
             value={earning.amount}
             onChange={(e) =>
               updateEarning(index, { ...earning, amount: parseFloat(e.target.value) || 0 })
@@ -71,14 +106,19 @@ const SalaryCalculator = () => {
             checked={earning.epfApplicable}
             onChange={(e) =>
               updateEarning(index, { ...earning, epfApplicable: e.target.checked })
+              
             }
           />
-          <button onClick={() => deleteEarning(index)}>X</button>
+          <h4 style={{fontFamily:'Inter, sans-serif',fontSize:'12px',fontWeight:'400'}}>EPF/ETF</h4>
+          <img src='./img/edit.png' onClick={() => handleEditEarning(index)} alt='edit' />
+          <img onClick={() => deleteEarning(index)} src='./img/delete.png' alt='delete' />
         </EarningItem>
       ))}
-      <button onClick={() => setIsEarningModalOpen(true)}>+ Add New Allowance</button>
-      <br></br>
-      <label style={labelStyle}>Deductions</label><br></br>
+      <span style={{fontFamily:'Inter, sans-serif',color:'#0052EA',fontWeight:'500',fontSize:'14px',cursor: 'pointer'}} onClick={() => {setEditingItem(null); setIsEarningModalOpen(true); setModalType('Earning');}}>+ Add New Allowance</span><br/>
+      <br/>
+      <div style={dividerStyle} /> 
+      <label style={labelStyle}>Deductions</label><br/>
+      <StyledH4>Salary Advances, Loan Deductions and all</StyledH4>
       {state.deductions.map((deduction, index) => (
         <DeductionItem key={index}>
           <input
@@ -88,6 +128,7 @@ const SalaryCalculator = () => {
               updateDeduction(index, { ...deduction, description: e.target.value })
             }
           />
+          
           <input
             type="number"
             value={deduction.amount}
@@ -95,23 +136,26 @@ const SalaryCalculator = () => {
               updateDeduction(index, { ...deduction, amount: parseFloat(e.target.value) || 0 })
             }
           />
-          <button onClick={() => deleteDeduction(index)}>X</button>
+          <img src='./img/edit.png' onClick={() => handleEditDeduction(index)} alt='edit' />
+          <img onClick={() => deleteDeduction(index)} src='./img/delete.png' alt='delete' />
         </DeductionItem>
       ))}
-      <button onClick={() => setIsDeductionModalOpen(true)}>+ Add New Deduction</button>
-      <button onClick={reset}>Reset</button>
-
+      <span style={{ fontFamily:'Inter, sans-serif',color:'#0052EA',fontWeight:'500',fontSize:'14px',cursor: 'pointer'}} onClick={() => {setEditingItem(null); setIsDeductionModalOpen(true); setModalType('Deduction');}}>+ Add New Deduction</span>
+      
       <InputModal
         isOpen={isEarningModalOpen}
         onRequestClose={() => setIsEarningModalOpen(false)}
         onSave={handleAddEarning}
-        title="Add New Earning"
+        title={editingItem ? "Edit Earning" : "Add New Earning"}
+        item={editingItem ? state.earnings[editingItem.index] : null}
+        isEarning={true}
       />
       <InputModal
         isOpen={isDeductionModalOpen}
         onRequestClose={() => setIsDeductionModalOpen(false)}
         onSave={handleAddDeduction}
-        title="Add New Deduction"
+        title={editingItem ? "Edit Deduction" : "Add New Deduction"}
+        item={editingItem ? state.deductions[editingItem.index] : null}
       />
     </Container>
   );
@@ -119,16 +163,24 @@ const SalaryCalculator = () => {
 
 export default SalaryCalculator;
 
+const dividerStyle = {
+  width: '100%',
+  borderTop: '2px solid #ccc',
+  margin: '8px 0'
+};
+
 const StyledInput = styled.input`
   margin-top:8px;
   border-radius: 4px;
   border: 1px solid #E0E0E0;
   padding: 8px 15px;
   margin-bottom: 8px;
+  width: 40%;
 `;
 
 const StyledH4 = styled.h4`
   margin-top:0.5px;
+  margin-bottom:10px;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   weight: 400px;
@@ -181,8 +233,9 @@ const EarningItem = styled.div`
     margin-right: 10px;
   }
 
-  & > button {
+  & > img {
     margin-left: 10px;
+    cursor: pointer;
   }
 `;
 
@@ -199,7 +252,8 @@ const DeductionItem = styled.div`
     margin-right: 10px;
   }
 
-  & > button {
+  & > img {
     margin-left: 10px;
+    cursor: pointer;
   }
 `;

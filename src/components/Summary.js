@@ -15,7 +15,8 @@ const Summary = () => {
 
   return (
     <Container>
-      <h2>Your Salary</h2>
+      <h2 style={{fontFamily:'Inter, sans-serif',fontSize:'20px',fontWeight:'700'}}>Your Salary</h2>
+      <p style={{fontFamily:'Inter, sans-serif',fontSize:'14px',fontWeight:'600',color:'#757575'}}>Items</p>
       <SummaryItem>
         <span>Basic Salary</span>
         <span>{state.basicSalary}</span>
@@ -35,12 +36,14 @@ const Summary = () => {
       <SummaryItem>
         <span>APIT</span>
         <span>{apit}</span>
-      </SummaryItem>
+      </SummaryItem><br></br>
+      <SummaryItemContainer>
       <SummaryItem>
-        <span>Net Salary (Take Home)</span>
+        <span style={{border:'1px'}}>Net Salary (Take Home)</span>
         <span>{netSalary}</span>
-      </SummaryItem>
-      <h3>Contribution from the Employer</h3>
+        </SummaryItem>
+      </SummaryItemContainer>
+      <p style={{fontFamily:'Inter, sans-serif',fontSize:'14px',fontWeight:'600',color:'#757575'}}>Contribution from the Employer</p>
       <SummaryItem>
         <span>Employer EPF (12%)</span>
         <span>{state.basicSalary * 0.12}</span>
@@ -48,7 +51,7 @@ const Summary = () => {
       <SummaryItem>
         <span>Employer ETF (3%)</span>
         <span>{state.basicSalary * 0.03}</span>
-      </SummaryItem>
+      </SummaryItem><br></br>
       <SummaryItem>
         <span>CTC (Cost to Company)</span>
         <span>{state.basicSalary + (state.basicSalary * 0.12) + (state.basicSalary * 0.03)}</span>
@@ -58,6 +61,13 @@ const Summary = () => {
 };
 
 export default Summary;
+
+const SummaryItemContainer = styled.div`
+  border: 1px solid #E0E0E0;
+  padding: 8px; 
+  padding-top:18px;
+  border-radius: 4px;
+`;
 
 const Container = styled.div`
   padding: 20px;
@@ -78,17 +88,12 @@ const SummaryItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 
-  span:last-child {
-    font-weight: bold;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    
-    span {
-      display: block;
+  span{
+      
       margin-bottom: 5px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px
     }
-  }
+  
 `;
